@@ -2,6 +2,8 @@ package fr.projetNosql.lib;
 
 
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
@@ -15,7 +17,6 @@ import java.util.*;
 public class Cluster {
 
     // Replace the placeholder with your MongoDB deployment's connection string
-    private String uri = "mongodb+srv://johann:PEmuDpCycGt0Eco1@clusterprojetnosql.qwvo5gy.mongodb.net/";
     private AmazonDynamoDB client;
     private DynamoDB dynamoDb;
 
@@ -25,7 +26,10 @@ public class Cluster {
 
     private void connect() {
         try {
-            client  = AmazonDynamoDBClientBuilder.standard().build();
+            client  = AmazonDynamoDBClientBuilder.standard().withRegion("eu-west-3")
+                    .withCredentials(new AWSStaticCredentialsProvider(
+                            new BasicAWSCredentials("AKIATKKCEGDPURQD5L5S","SsSnwNGP/JgoVyKTL59mtqVSi7zO9GNENKozVYZa")))
+                    .build();
             dynamoDb = new DynamoDB(client);
             System.out.println("Connected to the database successfully");
         } catch (Exception e) {
